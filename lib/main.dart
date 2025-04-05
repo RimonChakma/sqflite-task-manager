@@ -24,6 +24,7 @@ class TaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Task Manager"),),
+      floatingActionButton: FloatingActionButton(onPressed: (){},child: Icon(Icons.add),),
     );
   }
 }
