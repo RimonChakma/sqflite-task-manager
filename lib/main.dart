@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,6 +25,11 @@ class DatabaseHelper {
      },
      version: 1
    );
+  }
+
+  void insertUser (String name, int age) async {
+    final db = await database;
+    db.insert("user", {"name":name,"age":age});
   }
 
 }
