@@ -1,7 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_task_manager/task_create_screen.dart';
+import 'package:path/path.dart';
+
+class DatabaseHelper {
+  static Database? _database;
+
+  Future<Database> get database async{
+    if(_database!=null) return _database!;
+    _database =await initializeDB();
+    return _database!;
+  }
+
+  Future<Database> initializeDB() async {
+   String path = await getDatabasesPath();
+   return openDatabase(
+     join(path,"user.db"),
+     onCreate: (db, version) async {
+       await db.execute(
+         "CREATE TABLE user (id integer primary key, text name, integer age)"
+       );
+     },
+     version: 1
+   );
+  }
+
+}
+
+
+
+class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
+  TaskCubit():super([]){
+
+  }
+}
+
 
 void main(){
   runApp(MyApp());
@@ -12,13 +47,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) => TaskCubit(),);
-  }
-}
-
-class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
-  TaskCubit():super([]){
-
+    return BlocProvider(create: (context) => TaskCubit(),child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TaskScreen(),
+    ),);
   }
 }
 
