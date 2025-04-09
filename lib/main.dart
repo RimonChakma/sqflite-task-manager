@@ -91,6 +91,7 @@ class TaskScreen extends StatelessWidget {
               return ListTile(
                 title: Text(result["name"]),
                 subtitle: Text(result["age"].toString()),
+                trailing: IconButton(onPressed: (){}, icon: Icon(Icons.delete)),
               );
             },);
         }
