@@ -14,25 +14,25 @@ class DatabaseHelper {
     return _database!;
   }
 
-  Future<Database> initializeDB() async {
-   String path = await getDatabasesPath();
-   return openDatabase(
-     join(path,"user.db"),
-     onCreate: (db, version) async {
-       await db.execute(
-         "CREATE TABLE user (id integer primary key, text name, integer age)"
-       );
-     },
-     version: 1
-   );
-  }
+ Future<Database> initializeDB() async {
+    String path = await getDatabasesPath();
+    return openDatabase(
+      join(path,"user.db"),
+      onCreate: (db, version) async{
+        await db.execute(
+            "CREATE TABLE user (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)"
+        );
+      },
+      version: 1
+    );
+ }
 
   Future<int> insertUser (String name, int age) async {
     final db = await database;
     return db.insert("user", {"name":name,"age":age});
   }
 
-  Future<List<Map<String,dynamic>>> getUser (String name , int age)async {
+  Future<List<Map<String,dynamic>>> getUser ()async {
     final db = await database;
     return db.query("user");
   }
@@ -44,15 +44,19 @@ class DatabaseHelper {
 class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
   final DatabaseHelper databaseHelper;
   TaskCubit(this.databaseHelper):super([]){
-
+    fetchData();
   }
 
-  void addUser (String name, int age)  {
-   databaseHelper.insertUser(name, age);
+  void fetchData () async{
+   final users = await databaseHelper.getUser();
+   emit(users);
   }
+
+  void addUser (String name, int age) async {
+   await databaseHelper.insertUser(name, age);
+   fetchData();
 }
-
-
+}
 void main(){
   runApp(MyApp());
 }
@@ -76,6 +80,21 @@ class TaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Task Manager"),),
+      body: BlocBuilder <TaskCubit,List<Map<String,dynamic>>> (builder: (context, state) {
+        if(state.isEmpty){
+          return Center(child: Text("task is not available"),);
+        }else{
+          return  ListView.builder(
+            itemCount: state.length,
+            itemBuilder: (context, index) {
+              final result = state[index];
+              return ListTile(
+                title: Text(result["name"]),
+                subtitle: Text(result["age"].toString()),
+              );
+            },);
+        }
+      },),
       floatingActionButton: FloatingActionButton(onPressed: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TaskCreateScreen(),));
       },child: Icon(Icons.add),),

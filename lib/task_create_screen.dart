@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sqflite_task_manager/main.dart';
 
 class TaskCreateScreen extends StatelessWidget {
    TaskCreateScreen({super.key});
@@ -18,12 +20,20 @@ class TaskCreateScreen extends StatelessWidget {
           ),),
           SizedBox(height: 10,),
           TextField(
+            keyboardType: TextInputType.number,
             controller: ageController,
             decoration: InputDecoration(
             hintText: "age"
           ),),
           SizedBox(height: 10,),
-          ElevatedButton(onPressed: (){}, child: Text("saves")),
+          ElevatedButton(onPressed: (){
+          final nameData = nameController.text;
+          final ageData = int.tryParse(ageController.text);
+          if(nameData.isNotEmpty && ageData!=null){
+         context.read<TaskCubit>().addUser(nameData, ageData);
+          }
+          Navigator.pop(context);
+          }, child: Text("saves")),
         ],
       ),),
     );
