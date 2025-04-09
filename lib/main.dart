@@ -27,9 +27,14 @@ class DatabaseHelper {
    );
   }
 
-  void insertUser (String name, int age) async {
+  Future<int> insertUser (String name, int age) async {
     final db = await database;
-    db.insert("user", {"name":name,"age":age});
+    return db.insert("user", {"name":name,"age":age});
+  }
+
+  Future<List<Map<String,dynamic>>> getUser (String name , int age)async {
+    final db = await database;
+    return db.query("user");
   }
 
 }
@@ -37,8 +42,13 @@ class DatabaseHelper {
 
 
 class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
-  TaskCubit():super([]){
+  final DatabaseHelper databaseHelper;
+  TaskCubit(this.databaseHelper):super([]){
 
+  }
+
+  void addUser (String name, int age)  {
+   databaseHelper.insertUser(name, age);
   }
 }
 
@@ -52,7 +62,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) => TaskCubit(),child: MaterialApp(
+    return BlocProvider(create: (context) => TaskCubit(DatabaseHelper()),child: MaterialApp(
       debugShowCheckedModeBanner: false,
       home: TaskScreen(),
     ),);

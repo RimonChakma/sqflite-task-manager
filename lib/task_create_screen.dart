@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class TaskCreateScreen extends StatelessWidget {
    TaskCreateScreen({super.key});
 
-  TextEditingController addController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,13 +12,13 @@ class TaskCreateScreen extends StatelessWidget {
       body: Padding(padding: EdgeInsets.all(10),child: Column(
         children: [
           TextField(
-            controller: addController,
+            controller: nameController,
             decoration: InputDecoration(
             hintText: "name"
           ),),
           SizedBox(height: 10,),
           TextField(
-            controller: addController,
+            controller: ageController,
             decoration: InputDecoration(
             hintText: "age"
           ),),
