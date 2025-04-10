@@ -62,7 +62,10 @@ class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
    fetchData();
   }
 
-
+  void deleteData (int id)async {
+    await databaseHelper.deleteUser(id);
+    fetchData();
+  }
 }
 void main(){
   runApp(MyApp());
