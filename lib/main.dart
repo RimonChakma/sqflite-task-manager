@@ -37,6 +37,11 @@ class DatabaseHelper {
     return db.query("user");
   }
 
+  Future<int> deleteUser(int id) async {
+    final db = await database;
+    return db.delete("user",where: "id =?",whereArgs: [id]);
+  }
+
 }
 
 
@@ -55,7 +60,9 @@ class TaskCubit extends Cubit<List<Map<String,dynamic>>> {
   void addUser (String name, int age) async {
    await databaseHelper.insertUser(name, age);
    fetchData();
-}
+  }
+
+
 }
 void main(){
   runApp(MyApp());
