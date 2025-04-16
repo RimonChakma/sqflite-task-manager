@@ -42,6 +42,17 @@ class DatabaseHelper {
     return db.delete("user",where: "id =?",whereArgs: [id]);
   }
 
+  Future<int> updateUser(int id, String name, int age) async {
+    final db = await database;
+    return db.update(
+      "user",
+      {"name": name, "age": age},
+      where: "id = ?",
+      whereArgs: [id],
+    );
+  }
+
+
 }
 
 
