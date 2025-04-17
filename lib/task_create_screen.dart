@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite_task_manager/main.dart';
 
 class TaskCreateScreen extends StatelessWidget {
-   TaskCreateScreen({super.key});
+   final Map<String,dynamic>?result;
+   TaskCreateScreen({super.key, this.result,});
 
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();

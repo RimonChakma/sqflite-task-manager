@@ -117,7 +117,7 @@ class TaskScreen extends StatelessWidget {
               final result = state[index];
               return ListTile(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TaskCreateScreen(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TaskCreateScreen(result: result,),));
                 },
                 title: Text(result["name"]),
                 subtitle: Text(result["age"].toString()),
