@@ -10,6 +10,12 @@ class TaskCreateScreen extends StatelessWidget {
   TextEditingController ageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+
+    if(result !=null){
+      nameController.text = result !["name"];
+      ageController.text = result !["age"].toString();
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("Create Screen"),centerTitle: true,),
       body: Padding(padding: EdgeInsets.all(10),child: Column(
@@ -30,8 +36,11 @@ class TaskCreateScreen extends StatelessWidget {
           ElevatedButton(onPressed: (){
           final nameData = nameController.text;
           final ageData = int.tryParse(ageController.text);
-          if(nameData.isNotEmpty && ageData!=null){
-         context.read<TaskCubit>().addUser(nameData, ageData);
+
+          if(result == null){
+            context.read<TaskCubit>().addUser(nameData, ageData!);
+          }else{
+            context.read<TaskCubit>().updateUser(result!["id"], nameData,ageData!);
           }
           Navigator.pop(context);
           }, child: Text("saves")),
